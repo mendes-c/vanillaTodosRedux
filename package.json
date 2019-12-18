@@ -1,0 +1,21 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "materialize-css": "^1.0.0-rc.2"
+  },
+  "devDependencies": {
+    "css-loader": "^3.4.0",
+    "style-loader": "^1.0.2",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
