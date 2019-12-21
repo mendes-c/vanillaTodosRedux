@@ -7,10 +7,15 @@ M.AutoInit();
 export default (() => {
   const render = projects => {
     let main = document.querySelector("#main");
-    let collapsableUL = createAndAppend({ el: "ul", className: "collapsible" });
+    let collapsableUL = createAndAppend({
+      el: "ul",
+      id: "collapsible-margin",
+      className: "collapsible"
+    });
     projects.forEach(project => {
       renderProject(project, collapsableUL);
     });
+    main.appendChild(renderNav());
     main.appendChild(collapsableUL);
     M.AutoInit(); // figure out how to run this on page load complete
   };
@@ -18,11 +23,15 @@ export default (() => {
   const renderProject = (project, collapsableUL) => {
     let li = createAndAppend({
       el: "li",
+      attr: { text: "data-id", content: project.getId() },
       children: [
         createAndAppend({
           el: "div",
           className: "collapsible-header",
-          content: project.getTitle()
+          children: createAndAppend({
+            el: "h5",
+            content: project.getTitle()
+          })
         })
       ]
     });
@@ -42,6 +51,7 @@ export default (() => {
     todos.forEach(todo => {
       let li = createAndAppend({
         el: "li",
+        attr: { text: "data-id", content: todo.getTodo().id },
         className: "collection-item",
         children: [
           createAndAppend({
@@ -59,7 +69,7 @@ export default (() => {
             className: "secondary-content",
             children: createAndAppend({
               el: "i",
-              className: "material-icons red-text",
+              className: "small material-icons red-text text-lighten-1",
               content: "delete_forever"
             })
           }),
@@ -76,8 +86,7 @@ export default (() => {
       className: "collection-item right-align",
       children: createAndAppend({
         el: "a",
-        className:
-          "btn-floating btn-small waves-effect waves-light green add-todo",
+        className: "waves-effect waves-green btn-flat add-todo",
         children: createAndAppend({
           el: "i",
           className: "material-icons right-align",
@@ -89,5 +98,33 @@ export default (() => {
     body.appendChild(ul);
   };
 
-  return { render };
+  const renderNav = () => {
+    return createAndAppend({
+      el: "nav",
+      className: "blue lighten-2",
+      children: createAndAppend({
+        el: "div",
+        className: "nav-wrapper",
+        children: [
+          createAndAppend({
+            el: "ul",
+            className: "right",
+            children: [
+              createAndAppend({
+                el: "li",
+                children: createAndAppend({
+                  el: "a",
+                  attr: { text: "href", content: "#!" },
+                  content: "New Project"
+                })
+              })
+            ]
+          })
+        ]
+      })
+    });
+    // console.log(renderNav());
+  };
+
+  return { render, renderTodos };
 })();

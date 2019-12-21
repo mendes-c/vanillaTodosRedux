@@ -11,10 +11,11 @@ const createAndAppend = ({
   attr = null,
   type = null,
   name = null,
-  htmlFor = null
+  htmlFor = null,
+  dataId = null
 }) => {
   let element = document.createElement(el);
-  if (className) element.classList.add(...className.split(' '));
+  if (className) element.classList.add(...className.split(" "));
   if (id) element.id = id;
   if (content) element.innerHTML = content;
   if (attr) element.setAttribute(attr.text, attr.content);
@@ -23,7 +24,7 @@ const createAndAppend = ({
   if (htmlFor) element.htmlFor = htmlFor;
   if (children) {
     if (Array.isArray(children)) {
-      children.forEach((child) => {
+      children.forEach(child => {
         element.appendChild(child);
       });
     } else {

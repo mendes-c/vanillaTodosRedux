@@ -1,17 +1,17 @@
 // title, description, dueDate and priority
-import uuid from 'uuid/v4';
+import uuid from "uuid/v4";
 const todoFactory = ({
-  title = 'New Todo',
-  description = 'Description',
+  title = "New Todo",
+  description = "Description",
   dueDate = new Date(),
-  complete = false,
-  id = uuid()
+  complete = false
 }) => {
   let state = {
     title,
     description,
     dueDate,
-    complete
+    complete,
+    id: uuid()
   };
   const toggleComplete = () => {
     state.complete = !state.complete;
@@ -19,7 +19,7 @@ const todoFactory = ({
   const getTodo = () => {
     return Object.assign({}, state);
   };
-  const editTodo = (edits) => {
+  const editTodo = edits => {
     state = { ...edits };
   };
   return { getTodo, toggleComplete, editTodo };
