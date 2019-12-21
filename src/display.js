@@ -49,7 +49,7 @@ export default (() => {
     let ul = createAndAppend({ el: "ul", className: "collection" });
     let todos = project.getTodos();
     todos.forEach(todo => {
-      let li = createAndAppend({
+      createAndAppend({
         el: "li",
         attr: { text: "data-id", content: todo.getTodo().id },
         className: "collection-item",
@@ -58,7 +58,6 @@ export default (() => {
             el: "div",
             content: todo.getTodo().title
           }),
-
           createAndAppend({
             el: "span",
             content: todo.getTodo().description
@@ -69,7 +68,7 @@ export default (() => {
             className: "secondary-content",
             children: createAndAppend({
               el: "i",
-              className: "small material-icons red-text text-lighten-1",
+              className: "small material-icons red-text text-lighten-2",
               content: "delete_forever"
             })
           }),
@@ -86,10 +85,10 @@ export default (() => {
       className: "collection-item right-align",
       children: createAndAppend({
         el: "a",
-        className: "waves-effect waves-green btn-flat add-todo",
+        className: "btn-floating waves-effect teal lighten-5 add-todo",
         children: createAndAppend({
           el: "i",
-          className: "material-icons right-align",
+          className: "material-icons teal-text right-align",
           content: "add"
         })
       }),
@@ -101,7 +100,7 @@ export default (() => {
   const renderNav = () => {
     return createAndAppend({
       el: "nav",
-      className: "blue lighten-2",
+      className: "teal lighten-3",
       children: createAndAppend({
         el: "div",
         className: "nav-wrapper",
@@ -114,6 +113,7 @@ export default (() => {
                 el: "li",
                 children: createAndAppend({
                   el: "a",
+                  className: "waves-effect teal-text text-darken-4",
                   attr: { text: "href", content: "#!" },
                   content: "New Project"
                 })
@@ -123,8 +123,89 @@ export default (() => {
         ]
       })
     });
-    // console.log(renderNav());
   };
-
-  return { render, renderTodos };
+  const renderInput = () => {
+    return createAndAppend({
+      el: "div",
+      className: "row left-align",
+      children: [
+        createAndAppend({
+          el: "form",
+          className: "col s12",
+          children: [
+            createAndAppend({
+              el: "div",
+              className: "row",
+              children: [
+                createAndAppend({
+                  el: "div",
+                  className: "input-field col s12",
+                  children: [
+                    createAndAppend({
+                      el: "input",
+                      id: "title",
+                      type: "text",
+                      className: "validate"
+                    }),
+                    createAndAppend({
+                      el: "label",
+                      attr: { text: "for", content: "title" },
+                      content: "Title"
+                    })
+                  ]
+                }),
+                createAndAppend({
+                  el: "div",
+                  className: "input-field col s12",
+                  children: [
+                    createAndAppend({
+                      el: "input",
+                      id: "description",
+                      type: "text",
+                      className: "validate"
+                    }),
+                    createAndAppend({
+                      el: "label",
+                      attr: { text: "for", content: "description" },
+                      content: "Description"
+                    })
+                  ]
+                }),
+                createAndAppend({
+                  el: "div",
+                  className: "input-field col s12",
+                  children: [
+                    createAndAppend({
+                      el: "input",
+                      id: "dueDate",
+                      type: "date",
+                      className: "validate"
+                    }),
+                    createAndAppend({
+                      el: "label",
+                      attr: { text: "for", content: "dueDate" },
+                      content: "Due Date"
+                    })
+                  ]
+                }),
+                createAndAppend({
+                  el: "div",
+                  className: "input-field col s12",
+                  children: [
+                    createAndAppend({
+                      el: "input",
+                      id: "submitTodo",
+                      type: "submit",
+                      className: "btn waves-effect waves-light"
+                    })
+                  ]
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    });
+  };
+  return { render, renderTodos, renderInput };
 })();
