@@ -1,18 +1,22 @@
 // todo item
+import { app } from "./app";
 import { todoFactory } from "./todos";
 import { projectFactory } from "./projects";
 import displayController from "./displayController";
 import display from "./display";
 
-let projects = [
+const projects = app({});
+projects.addProject(
   projectFactory({
-    title: "project 1",
+    title: "thing one",
     todos: [
       todoFactory({ title: "1" }),
       todoFactory({ title: "2" }),
-      todoFactory({ title: "3" })
+      todoFactory({ title: "1" })
     ]
-  }),
+  })
+);
+projects.addProject(
   projectFactory({
     title: "project 2",
     todos: [
@@ -22,7 +26,7 @@ let projects = [
       todoFactory({ title: "four" })
     ]
   })
-];
+);
 
 display.render(projects);
 displayController(projects, display);

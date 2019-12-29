@@ -12,11 +12,12 @@ export default (() => {
       id: "collapsible-margin",
       className: "collapsible"
     });
-    projects.forEach(project => {
+    projects.getProjects().forEach(project => {
       renderProject(project, collapsableUL);
     });
     main.appendChild(renderNav());
     main.appendChild(collapsableUL);
+    main.insertAdjacentElement("afterend", renderModal());
     M.AutoInit(); // figure out how to run this on page load complete
   };
 
@@ -49,19 +50,28 @@ export default (() => {
     let ul = createAndAppend({ el: "ul", className: "collection" });
     let todos = project.getTodos();
     todos.forEach(todo => {
+      // easier to do in react
+      let completeClass = "material-icons circle white grey-text complete-icon";
+
+      if (todo.getTodo().complete) {
+        completeClass = "material-icons circle teal complete-icon";
+      }
+
       createAndAppend({
         el: "li",
         attr: { text: "data-id", content: todo.getTodo().id },
-        className: "collection-item",
+        className: "collection-item avatar",
         children: [
+          createAndAppend({
+            el: "i",
+            className: completeClass,
+            content: "check_circle_outline"
+          }),
           createAndAppend({
             el: "div",
             content: todo.getTodo().title
           }),
-          createAndAppend({
-            el: "span",
-            content: todo.getTodo().description
-          }),
+
           createAndAppend({
             el: "a",
             attr: { text: "href", content: "#!" },
@@ -113,8 +123,9 @@ export default (() => {
                 el: "li",
                 children: createAndAppend({
                   el: "a",
-                  className: "waves-effect teal-text text-darken-4",
-                  attr: { text: "href", content: "#!" },
+                  className:
+                    "waves-effect teal-text text-darken-4 modal-trigger",
+                  attr: { text: "href", content: "#modal1" },
                   content: "New Project"
                 })
               })
@@ -154,23 +165,23 @@ export default (() => {
                     })
                   ]
                 }),
-                createAndAppend({
-                  el: "div",
-                  className: "input-field col s12",
-                  children: [
-                    createAndAppend({
-                      el: "input",
-                      id: "description",
-                      type: "text",
-                      className: "validate"
-                    }),
-                    createAndAppend({
-                      el: "label",
-                      attr: { text: "for", content: "description" },
-                      content: "Description"
-                    })
-                  ]
-                }),
+                // createAndAppend({
+                //   el: "div",
+                //   className: "input-field col s12",
+                //   children: [
+                //     createAndAppend({
+                //       el: "input",
+                //       id: "description",
+                //       type: "text",
+                //       className: "validate"
+                //     }),
+                //     createAndAppend({
+                //       el: "label",
+                //       attr: { text: "for", content: "description" },
+                //       content: "Description"
+                //     })
+                //   ]
+                // }),
                 createAndAppend({
                   el: "div",
                   className: "input-field col s12",
@@ -199,6 +210,50 @@ export default (() => {
                       className: "btn waves-effect waves-light"
                     })
                   ]
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    });
+  };
+  const renderModal = () => {
+    M.AutoInit();
+    return createAndAppend({
+      el: "div",
+      id: "modal1",
+      className: "modal",
+      children: [
+        createAndAppend({
+          el: "div",
+          className: "modal-content",
+          children: [
+            createAndAppend({
+              el: "h5",
+              content: "Enter New Project Name"
+            }),
+            createAndAppend({
+              el: "div",
+              className: "input-field",
+              children: [
+                createAndAppend({
+                  el: "input",
+                  attr: { text: "type", content: "text" },
+                  id: "projectTitle",
+                  class: "validate"
+                }),
+                createAndAppend({
+                  el: "label",
+                  attr: { text: "for", content: "projectTitle" },
+                  content: "Project Title"
+                }),
+                createAndAppend({
+                  el: "a",
+                  id: "addProject",
+                  attr: { text: "href", content: "#!" },
+                  className: "modal-close waves-effect waves-green btn-flat",
+                  content: "Create"
                 })
               ]
             })

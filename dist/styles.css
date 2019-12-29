@@ -1,6 +1,10 @@
 #collapsible-margin {
-  margin: 0 0 1rem 0;
+  margin-top: 1px;
 }
 .container {
   margin-top: 0.25rem;
+}
+
+.material-icons.circle.white {
+  cursor: pointer;
 }
