@@ -4,6 +4,7 @@ import { todoFactory } from "./todos";
 import { projectFactory } from "./projects";
 import displayController from "./displayController";
 import display from "./display";
+import { parseISO } from "date-fns";
 
 // when do you get it?
 
@@ -26,12 +27,14 @@ const getProjects = () => {
         title: project.title
       });
       project.todos.forEach(todo => {
+        todo.dueDate = parseISO(todo.dueDate);
         createdProject.addTodo(todoFactory(todo));
       });
       projects.addProject(createdProject);
     });
     return { projects: projects.getProjects() };
   }
+  console.log(result);
   return result;
 };
 

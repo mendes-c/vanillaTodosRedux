@@ -2,6 +2,19 @@ const app = ({ projects = [] }) => {
   const state = {
     projects
   };
+
+  const projectsToJSON = () => {
+    let arr = projects.map(project => {
+      let result = { title: project.getTitle(), id: project.getId() };
+      let todos = project.getTodos().map(todo => {
+        return todo.getTodo();
+      });
+      result.todos = todos;
+
+      return result;
+    });
+    return JSON.stringify(arr);
+  };
   const getProjects = () => {
     return Object.assign([], state.projects);
   };
@@ -22,7 +35,8 @@ const app = ({ projects = [] }) => {
     getProjects,
     addProject,
     removeProject,
-    getProject
+    getProject,
+    projectsToJSON
   };
 };
 

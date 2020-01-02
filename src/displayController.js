@@ -29,6 +29,8 @@ export default (projects, display) => {
         }
       });
       let body = e.target.parentNode.parentNode.parentNode;
+      updateLocalStorage(projects);
+
       body.innerHTML = "";
       display.renderTodos(project, body);
     }
@@ -40,6 +42,7 @@ export default (projects, display) => {
       let value = document.querySelector("#projectTitle").value;
       projects.addProject(projectFactory({ title: value }));
       document.querySelector("#main").innerHTML = "";
+      updateLocalStorage(projects);
       display.render(projects);
     }
   });
@@ -56,6 +59,7 @@ export default (projects, display) => {
     projects.getProjects().forEach(project => {
       project.removeTodo(id);
     });
+    updateLocalStorage(projects);
     body.innerHTML = "";
     display.renderTodos(project, body);
   };
@@ -85,7 +89,13 @@ export default (projects, display) => {
     let body =
       e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
         .parentNode;
+
+    updateLocalStorage(projects);
     body.innerHTML = "";
     display.renderTodos(project, body);
+  };
+
+  const updateLocalStorage = projects => {
+    localStorage.setItem("projects", projects.projectsToJSON());
   };
 };
