@@ -14,6 +14,7 @@ const projectFactory = ({
     return Object.assign([], state.todos);
   };
   const addTodo = todo => {
+    // call to local storage, push entire projects array?
     state.todos.push(todo);
   };
   const removeTodo = id => {

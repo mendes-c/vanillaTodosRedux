@@ -165,23 +165,6 @@ export default (() => {
                     })
                   ]
                 }),
-                // createAndAppend({
-                //   el: "div",
-                //   className: "input-field col s12",
-                //   children: [
-                //     createAndAppend({
-                //       el: "input",
-                //       id: "description",
-                //       type: "text",
-                //       className: "validate"
-                //     }),
-                //     createAndAppend({
-                //       el: "label",
-                //       attr: { text: "for", content: "description" },
-                //       content: "Description"
-                //     })
-                //   ]
-                // }),
                 createAndAppend({
                   el: "div",
                   className: "input-field col s12",
