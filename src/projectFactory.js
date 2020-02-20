@@ -27,7 +27,11 @@ const projectFactory = ({
       return todo.id == id;
     });
   };
-  const editTodo = id => {};
+  const editTodo = id => {
+    let todo = state.todos.find(todo => {
+      return todo.getTodo().id === id;
+    });
+  };
 
   const togglePriority = () => {
     state.priority = !state.priority;
@@ -42,6 +46,7 @@ const projectFactory = ({
   return {
     getTodos,
     addTodo,
+    editTodo,
     removeTodo,
     getTodo,
     togglePriority,

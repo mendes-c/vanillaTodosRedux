@@ -1,12 +1,12 @@
 import { parse } from "date-fns";
-import { todoFactory } from "./todos";
-import { projectFactory } from "./projects";
+import { todoFactory } from "./todoFactory";
+import { projectFactory } from "./projectFactory";
 export default (projects, display) => {
   document.querySelector("#main").addEventListener("click", e => {
     if (e.target.textContent == "delete_forever") {
       removeTodoController(e);
     }
-    if (e.target.textContent == "add") {
+    if (e.target.id == "add-todo") {
       let parentList = e.target.parentNode.parentNode;
       parentList.appendChild(display.renderInput());
     }

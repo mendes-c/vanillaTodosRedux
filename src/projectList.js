@@ -1,16 +1,13 @@
-const app = ({ projects = [] }) => {
+const projectList = ({ projects = [] }) => {
   const state = {
     projects
   };
-
   const projectsToJSON = () => {
     let arr = projects.map(project => {
       let result = { title: project.getTitle(), id: project.getId() };
-      let todos = project.getTodos().map(todo => {
+      result.todos = project.getTodos().map(todo => {
         return todo.getTodo();
       });
-      result.todos = todos;
-
       return result;
     });
     return JSON.stringify(arr);
@@ -39,5 +36,4 @@ const app = ({ projects = [] }) => {
     projectsToJSON
   };
 };
-
-export { app };
+export { projectList };

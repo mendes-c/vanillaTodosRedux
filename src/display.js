@@ -1,44 +1,44 @@
-import { createAndAppend } from "./util";
-import { format, parseISO } from "date-fns";
-import "materialize-css/dist/css/materialize.min.css";
-import M from "materialize-css/dist/js/materialize.min.js";
+import { createAndAppend } from './util';
+import { format } from 'date-fns';
+import 'materialize-css/dist/css/materialize.min.css';
+import M from 'materialize-css/dist/js/materialize.min.js';
 M.AutoInit();
 
 export default (() => {
   const render = projects => {
-    let main = document.querySelector("#main");
+    let main = document.querySelector('#main');
     let collapsableUL = createAndAppend({
-      el: "ul",
-      id: "collapsible-margin",
-      className: "collapsible"
+      el: 'ul',
+      id: 'collapsible-margin',
+      className: 'collapsible'
     });
     projects.getProjects().forEach(project => {
       renderProject(project, collapsableUL);
     });
     main.appendChild(renderNav());
     main.appendChild(collapsableUL);
-    main.insertAdjacentElement("afterend", renderModal());
+    main.insertAdjacentElement('afterend', renderModal());
     M.AutoInit(); // figure out how to run this on page load complete
   };
 
   const renderProject = (project, collapsableUL) => {
     let li = createAndAppend({
-      el: "li",
-      attr: { text: "data-id", content: project.getId() },
+      el: 'li',
+      attr: { text: 'data-id', content: project.getId() },
       children: [
         createAndAppend({
-          el: "div",
-          className: "collapsible-header",
+          el: 'div',
+          className: 'collapsible-header',
           children: createAndAppend({
-            el: "h5",
+            el: 'h5',
             content: project.getTitle()
           })
         })
       ]
     });
     let body = createAndAppend({
-      el: "div",
-      className: "collapsible-body"
+      el: 'div',
+      className: 'collapsible-body'
     });
     renderTodos(project, body);
 
@@ -47,59 +47,60 @@ export default (() => {
   };
 
   const renderTodos = (project, body) => {
-    let ul = createAndAppend({ el: "ul", className: "collection" });
+    let ul = createAndAppend({ el: 'ul', className: 'collection' });
     let todos = project.getTodos();
     todos.forEach(todo => {
       // easier to do in react
-      let completeClass = "material-icons circle white grey-text complete-icon";
+      let completeClass = 'material-icons circle white grey-text complete-icon';
 
       if (todo.getTodo().complete) {
-        completeClass = "material-icons circle teal complete-icon";
+        completeClass = 'material-icons circle teal complete-icon';
       }
 
       createAndAppend({
-        el: "li",
-        attr: { text: "data-id", content: todo.getTodo().id },
-        className: "collection-item avatar",
+        el: 'li',
+        attr: { text: 'data-id', content: todo.getTodo().id },
+        className: 'collection-item avatar',
         children: [
           createAndAppend({
-            el: "i",
+            el: 'i',
             className: completeClass,
-            content: "check_circle_outline"
+            content: 'check_circle_outline'
           }),
           createAndAppend({
-            el: "div",
+            el: 'div',
             content: todo.getTodo().title
           }),
-
           createAndAppend({
-            el: "a",
-            attr: { text: "href", content: "#!" },
-            className: "secondary-content",
+            el: 'a',
+            attr: { text: 'href', content: '#!' },
+            className: 'secondary-content',
             children: createAndAppend({
-              el: "i",
-              className: "small material-icons red-text text-lighten-2",
-              content: "delete_forever"
+              el: 'i',
+              className: 'small material-icons red-text text-lighten-2',
+              content: 'delete_forever'
             })
           }),
           createAndAppend({
-            el: "div",
-            content: format(todo.getTodo().dueDate, "MM/dd/yyyy")
+            el: 'div',
+            content: format(todo.getTodo().dueDate, 'MM/dd/yyyy')
           })
         ],
         parent: ul
       });
     });
     createAndAppend({
-      el: "li",
-      className: "collection-item right-align",
+      el: 'li',
+      className: 'collection-item right-align',
       children: createAndAppend({
-        el: "a",
-        className: "btn-floating waves-effect teal lighten-5 add-todo",
+        el: 'a',
+        className: 'btn-floating waves-effect teal lighten-5 add-todo',
+
         children: createAndAppend({
-          el: "i",
-          className: "material-icons teal-text right-align",
-          content: "add"
+          el: 'i',
+          className: 'material-icons teal-text right-align',
+          content: 'add',
+          id: 'add-todo'
         })
       }),
       parent: ul
@@ -109,24 +110,24 @@ export default (() => {
 
   const renderNav = () => {
     return createAndAppend({
-      el: "nav",
-      className: "teal lighten-3",
+      el: 'nav',
+      className: 'teal lighten-3',
       children: createAndAppend({
-        el: "div",
-        className: "nav-wrapper",
+        el: 'div',
+        className: 'nav-wrapper',
         children: [
           createAndAppend({
-            el: "ul",
-            className: "right",
+            el: 'ul',
+            className: 'right',
             children: [
               createAndAppend({
-                el: "li",
+                el: 'li',
                 children: createAndAppend({
-                  el: "a",
+                  el: 'a',
                   className:
-                    "waves-effect teal-text text-darken-4 modal-trigger",
-                  attr: { text: "href", content: "#modal1" },
-                  content: "New Project"
+                    'waves-effect teal-text text-darken-4 modal-trigger',
+                  attr: { text: 'href', content: '#modal1' },
+                  content: 'New Project'
                 })
               })
             ]
@@ -137,60 +138,60 @@ export default (() => {
   };
   const renderInput = () => {
     return createAndAppend({
-      el: "div",
-      className: "row left-align",
+      el: 'div',
+      className: 'row left-align',
       children: [
         createAndAppend({
-          el: "form",
-          className: "col s12",
+          el: 'form',
+          className: 'col s12',
           children: [
             createAndAppend({
-              el: "div",
-              className: "row",
+              el: 'div',
+              className: 'row',
               children: [
                 createAndAppend({
-                  el: "div",
-                  className: "input-field col s12",
+                  el: 'div',
+                  className: 'input-field col s12',
                   children: [
                     createAndAppend({
-                      el: "input",
-                      id: "title",
-                      type: "text",
-                      className: "validate"
+                      el: 'input',
+                      id: 'title',
+                      type: 'text',
+                      className: 'validate'
                     }),
                     createAndAppend({
-                      el: "label",
-                      attr: { text: "for", content: "title" },
-                      content: "Title"
+                      el: 'label',
+                      attr: { text: 'for', content: 'title' },
+                      content: 'Title'
                     })
                   ]
                 }),
                 createAndAppend({
-                  el: "div",
-                  className: "input-field col s12",
+                  el: 'div',
+                  className: 'input-field col s12',
                   children: [
                     createAndAppend({
-                      el: "input",
-                      id: "dueDate",
-                      type: "date",
-                      className: "validate"
+                      el: 'input',
+                      id: 'dueDate',
+                      type: 'date',
+                      className: 'validate'
                     }),
                     createAndAppend({
-                      el: "label",
-                      attr: { text: "for", content: "dueDate" },
-                      content: "Due Date"
+                      el: 'label',
+                      attr: { text: 'for', content: 'dueDate' },
+                      content: 'Due Date'
                     })
                   ]
                 }),
                 createAndAppend({
-                  el: "div",
-                  className: "input-field col s12",
+                  el: 'div',
+                  className: 'input-field col s12',
                   children: [
                     createAndAppend({
-                      el: "input",
-                      id: "submitTodo",
-                      type: "submit",
-                      className: "btn waves-effect waves-light"
+                      el: 'input',
+                      id: 'submitTodo',
+                      type: 'submit',
+                      className: 'btn waves-effect waves-light'
                     })
                   ]
                 })
@@ -204,39 +205,39 @@ export default (() => {
   const renderModal = () => {
     M.AutoInit();
     return createAndAppend({
-      el: "div",
-      id: "modal1",
-      className: "modal",
+      el: 'div',
+      id: 'modal1',
+      className: 'modal',
       children: [
         createAndAppend({
-          el: "div",
-          className: "modal-content",
+          el: 'div',
+          className: 'modal-content',
           children: [
             createAndAppend({
-              el: "h5",
-              content: "Enter New Project Name"
+              el: 'h5',
+              content: 'Enter New Project Name'
             }),
             createAndAppend({
-              el: "div",
-              className: "input-field",
+              el: 'div',
+              className: 'input-field',
               children: [
                 createAndAppend({
-                  el: "input",
-                  attr: { text: "type", content: "text" },
-                  id: "projectTitle",
-                  class: "validate"
+                  el: 'input',
+                  attr: { text: 'type', content: 'text' },
+                  id: 'projectTitle',
+                  class: 'validate'
                 }),
                 createAndAppend({
-                  el: "label",
-                  attr: { text: "for", content: "projectTitle" },
-                  content: "Project Title"
+                  el: 'label',
+                  attr: { text: 'for', content: 'projectTitle' },
+                  content: 'Project Title'
                 }),
                 createAndAppend({
-                  el: "a",
-                  id: "addProject",
-                  attr: { text: "href", content: "#!" },
-                  className: "modal-close waves-effect waves-green btn-flat",
-                  content: "Create"
+                  el: 'a',
+                  id: 'addProject',
+                  attr: { text: 'href', content: '#!' },
+                  className: 'modal-close waves-effect waves-green btn-flat',
+                  content: 'Create'
                 })
               ]
             })

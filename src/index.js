@@ -1,7 +1,7 @@
 // todo item
-import { app } from "./app";
-import { todoFactory } from "./todos";
-import { projectFactory } from "./projects";
+import { projectList } from "./projectList";
+import { todoFactory } from "./todoFactory";
+import { projectFactory } from "./projectFactory";
 import displayController from "./displayController";
 import display from "./display";
 import { parseISO } from "date-fns";
@@ -15,7 +15,7 @@ import { parseISO } from "date-fns";
 // when you add and when you remove
 
 const getProjects = () => {
-  const projects = app({});
+  const projects = projectList({});
   let data = localStorage.getItem("projects");
   let result = { projects: [] };
   if (data) {
@@ -38,7 +38,7 @@ const getProjects = () => {
   return result;
 };
 
-const projects = app(getProjects());
+const projects = projectList(getProjects());
 
 display.render(projects);
 displayController(projects, display);
