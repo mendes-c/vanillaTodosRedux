@@ -1,7 +1,6 @@
-// title, dueDate, complete
-import uuid from "uuid/v4";
-const todoFactory = ({
-  title = "New Todo",
+import uuid from 'uuid/v4';
+export const todoFactory = ({
+  title = 'New Todo',
   dueDate = new Date(),
   complete = false
 }) => {
@@ -17,10 +16,8 @@ const todoFactory = ({
   const getTodo = () => {
     return Object.assign({}, state);
   };
-  const editTodo = edits => {
+  const editTodo = (edits) => {
     state = { ...state, ...edits };
   };
   return { getTodo, toggleComplete, editTodo };
 };
-
-export { todoFactory };

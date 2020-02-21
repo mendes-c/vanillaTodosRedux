@@ -1,6 +1,6 @@
-import uuid from "uuid/v4";
+import uuid from 'uuid/v4';
 const projectFactory = ({
-  title = "New Project",
+  title = 'New Project',
   priority = false,
   todos = []
 }) => {
@@ -13,22 +13,22 @@ const projectFactory = ({
   const getTodos = () => {
     return Object.assign([], state.todos);
   };
-  const addTodo = todo => {
-    // call to local storage, push entire projects array?
+  const addTodo = (todo) => {
     state.todos.push(todo);
   };
-  const removeTodo = id => {
-    state.todos = state.todos.filter(todo => {
+  const removeTodo = (id) => {
+    state.todos = state.todos.filter((todo) => {
       return todo.getTodo().id !== id;
     });
   };
-  const getTodo = id => {
-    return state.todos.find(todo => {
+  const getTodo = (id) => {
+    return state.todos.find((todo) => {
       return todo.id == id;
     });
   };
-  const editTodo = id => {
-    let todo = state.todos.find(todo => {
+  const editTodo = (id) => {
+    // not functional
+    let todo = state.todos.find((todo) => {
       return todo.getTodo().id === id;
     });
   };
