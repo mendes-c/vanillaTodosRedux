@@ -8,3 +8,9 @@
 .material-icons.circle.white {
   cursor: pointer;
 }
+
+.secondary-header-content {
+  margin-top: 1rem;
+  position: absolute;
+  right: 1.5rem;
+}

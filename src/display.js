@@ -2,7 +2,6 @@ import { createAndAppend } from './util';
 import { format } from 'date-fns';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
-M.AutoInit();
 
 export default (() => {
   const render = projects => {
@@ -29,10 +28,18 @@ export default (() => {
         createAndAppend({
           el: 'div',
           className: 'collapsible-header',
-          children: createAndAppend({
-            el: 'h5',
-            content: project.getTitle()
-          })
+          children: [
+            createAndAppend({
+              el: 'h5',
+              content: project.getTitle()
+            }),
+            createAndAppend({
+              el: 'i',
+              content: 'delete',
+              className:
+                'secondary-header-content tiny material-icons red-text text-lighten-4'
+            })
+          ]
         })
       ]
     });

@@ -4,7 +4,33 @@ import { projectFactory } from './projectFactory';
 import { parseISO } from 'date-fns';
 
 export const displayController = (projects, display) => {
-  document.querySelector('#main').addEventListener('click', (e) => {
+  const getProjectId = providedElement => {
+    return (el => {
+      while (el.parentNode) {
+        el = el.parentNode;
+        if (el.dataset.id) return el;
+      }
+    })(providedElement).dataset.id;
+  };
+
+  const updateProjects = () => {
+    document.querySelector('#main').innerHTML = '';
+    updateLocalStorage(projects);
+    display.render(projects);
+  };
+  const updateTodos = (project, el) => {
+    let body = (el => {
+      while (el.parentNode) {
+        el = el.parentNode;
+        if (el.classList.contains('collapsible-body')) return el;
+      }
+    })(el);
+
+    updateLocalStorage(projects);
+    body.innerHTML = '';
+    display.renderTodos(project, body);
+  };
+  document.querySelector('#main').addEventListener('click', e => {
     if (e.target.textContent == 'delete_forever') {
       removeTodoController(e);
     }
@@ -15,58 +41,55 @@ export const displayController = (projects, display) => {
     if (e.target.id == 'submitTodo') {
       submitTodoController(e);
     }
-    // lazy selection
+    // toggle complete
     if (Array.from(e.target.classList).includes('complete-icon')) {
       const todoId = e.target.parentNode.dataset.id;
       let projectId =
         e.target.parentNode.parentNode.parentNode.parentNode.dataset.id;
-      let project = projects.getProjects().filter((project) => {
+      let project = projects.getProjects().filter(project => {
         return project.getId() == projectId;
       })[0];
 
-      project.getTodos().forEach((todo) => {
+      project.getTodos().forEach(todo => {
         if (todoId == todo.getTodo().id) {
           todo.toggleComplete();
-          console.log(todo.getTodo());
         }
       });
-      let body = e.target.parentNode.parentNode.parentNode;
-      updateLocalStorage(projects);
 
-      body.innerHTML = '';
-      display.renderTodos(project, body);
+      updateTodos(project, e.target.parentNode);
     }
   });
 
-  // modal selection
-  document.body.addEventListener('click', (e) => {
+  document.body.addEventListener('click', e => {
+    // add project
     if (e.target.id == 'addProject') {
       let value = document.querySelector('#projectTitle').value;
       projects.addProject(projectFactory({ title: value }));
-      document.querySelector('#main').innerHTML = '';
-      updateLocalStorage(projects);
-      display.render(projects);
+      updateProjects();
+    }
+    // remove project
+    if (e.target.classList.contains('secondary-header-content')) {
+      let id = e.target.parentNode.parentNode.dataset.id;
+      projects.removeProject(id);
+      updateProjects();
     }
   });
 
-  const removeTodoController = (e) => {
+  const removeTodoController = e => {
     let projectId =
       e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset
         .id;
-    let body = e.target.parentNode.parentNode.parentNode.parentNode;
-    let project = projects.getProjects().filter((project) => {
+    let project = projects.getProjects().filter(project => {
       return project.getId() == projectId;
     })[0];
     let id = e.target.parentNode.parentNode.dataset.id;
-    projects.getProjects().forEach((project) => {
+    projects.getProjects().forEach(project => {
       project.removeTodo(id);
     });
-    updateLocalStorage(projects);
-    body.innerHTML = '';
-    display.renderTodos(project, body);
+    updateTodos(project, e.target.parentNode);
   };
 
-  const submitTodoController = (e) => {
+  const submitTodoController = e => {
     e.preventDefault();
     let title = document.querySelector('#title').value;
     if (title == '') title = 'Title';
@@ -77,47 +100,34 @@ export const displayController = (projects, display) => {
     );
     if (dueDate == 'Invalid Date') dueDate = new Date();
 
-    let projectId = ((el) => {
-      while (el.parentNode) {
-        el = el.parentNode;
-        if (el.dataset.id) return el;
-      }
-    })(e.target.parentNode).dataset.id;
+    let projectId = getProjectId(e.target.parentNode);
 
-    let project = projects.getProjects().filter((project) => {
+    let project = projects.getProjects().filter(project => {
       return project.getId() == projectId;
     })[0];
     project.addTodo(todoFactory({ title, dueDate }));
 
     // turn this traversal into a helper function with (el, thing?)
-    let body = ((el) => {
-      while (el.parentNode) {
-        el = el.parentNode;
-        if (el.classList.contains('collapsible-body')) return el;
-      }
-    })(e.target.parentNode);
-    updateLocalStorage(projects);
-    body.innerHTML = '';
-    display.renderTodos(project, body);
+    updateTodos(project, e.target.parentNode);
   };
 
-  const updateLocalStorage = (projects) => {
+  const updateLocalStorage = projects => {
     localStorage.setItem('projects', projects.projectsToJSON());
   };
 };
 
-export const getProjects = (projects) => {
+export const getProjects = projects => {
   let data = localStorage.getItem('projects');
   let result = { projects: [] };
   if (data) {
-    JSON.parse(data).forEach((project) => {
+    JSON.parse(data).forEach(project => {
       result.projects.push(project);
     });
-    result.projects.forEach((project) => {
+    result.projects.forEach(project => {
       let createdProject = projectFactory({
         title: project.title
       });
-      project.todos.forEach((todo) => {
+      project.todos.forEach(todo => {
         todo.dueDate = parseISO(todo.dueDate);
         createdProject.addTodo(todoFactory(todo));
       });
