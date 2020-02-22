@@ -2,9 +2,19 @@ import { parse } from 'date-fns';
 import { todoFactory } from './todoFactory';
 import { projectFactory } from './projectFactory';
 import { parseISO } from 'date-fns';
+import { render, renderTodos, renderInput } from './display';
 
-export const displayController = (projects, display) => {
+export const displayController = projects => {
   const getProjectId = providedElement => {
+    return (el => {
+      while (el.parentNode) {
+        el = el.parentNode;
+        if (el.dataset.projectid) return el;
+      }
+    })(providedElement).dataset.projectid;
+  };
+
+  const getTodoId = providedElement => {
     return (el => {
       while (el.parentNode) {
         el = el.parentNode;
@@ -16,46 +26,43 @@ export const displayController = (projects, display) => {
   const updateProjects = () => {
     document.querySelector('#main').innerHTML = '';
     updateLocalStorage(projects);
-    display.render(projects);
+    render(projects);
   };
   const updateTodos = (project, el) => {
-    let body = (el => {
+    let collapsibleBody = (el => {
       while (el.parentNode) {
         el = el.parentNode;
         if (el.classList.contains('collapsible-body')) return el;
       }
     })(el);
-
     updateLocalStorage(projects);
-    body.innerHTML = '';
-    display.renderTodos(project, body);
+    collapsibleBody.innerHTML = '';
+    renderTodos(project, collapsibleBody);
   };
   document.querySelector('#main').addEventListener('click', e => {
     if (e.target.textContent == 'delete_forever') {
       removeTodoController(e);
     }
+    // should switch from id targeting to class targeting, these id's are not unique.
     if (e.target.id == 'add-todo') {
       let parentList = e.target.parentNode.parentNode;
-      parentList.appendChild(display.renderInput());
+      parentList.appendChild(renderInput());
     }
     if (e.target.id == 'submitTodo') {
       submitTodoController(e);
     }
     // toggle complete
     if (Array.from(e.target.classList).includes('complete-icon')) {
-      const todoId = e.target.parentNode.dataset.id;
-      let projectId =
-        e.target.parentNode.parentNode.parentNode.parentNode.dataset.id;
-      let project = projects.getProjects().filter(project => {
-        return project.getId() == projectId;
+      const todoId = getTodoId(e.target);
+      const projectid = getProjectId(e.target);
+      const project = projects.getProjects().filter(project => {
+        return project.getId() == projectid;
       })[0];
-
       project.getTodos().forEach(todo => {
         if (todoId == todo.getTodo().id) {
           todo.toggleComplete();
         }
       });
-
       updateTodos(project, e.target.parentNode);
     }
   });
@@ -69,20 +76,18 @@ export const displayController = (projects, display) => {
     }
     // remove project
     if (e.target.classList.contains('secondary-header-content')) {
-      let id = e.target.parentNode.parentNode.dataset.id;
+      let id = e.target.parentNode.parentNode.dataset.projectid;
       projects.removeProject(id);
       updateProjects();
     }
   });
 
   const removeTodoController = e => {
-    let projectId =
-      e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset
-        .id;
+    let projectid = getProjectId(e.target);
     let project = projects.getProjects().filter(project => {
-      return project.getId() == projectId;
+      return project.getId() == projectid;
     })[0];
-    let id = e.target.parentNode.parentNode.dataset.id;
+    let id = getTodoId(e.target);
     projects.getProjects().forEach(project => {
       project.removeTodo(id);
     });
@@ -100,14 +105,15 @@ export const displayController = (projects, display) => {
     );
     if (dueDate == 'Invalid Date') dueDate = new Date();
 
-    let projectId = getProjectId(e.target.parentNode);
+    let projectid = getProjectId(e.target.parentNode);
 
+    // use different array method here
     let project = projects.getProjects().filter(project => {
-      return project.getId() == projectId;
+      return project.getId() == projectid;
     })[0];
+
     project.addTodo(todoFactory({ title, dueDate }));
 
-    // turn this traversal into a helper function with (el, thing?)
     updateTodos(project, e.target.parentNode);
   };
 

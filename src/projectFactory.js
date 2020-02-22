@@ -13,22 +13,22 @@ const projectFactory = ({
   const getTodos = () => {
     return Object.assign([], state.todos);
   };
-  const addTodo = (todo) => {
+  const addTodo = todo => {
     state.todos.push(todo);
   };
-  const removeTodo = (id) => {
-    state.todos = state.todos.filter((todo) => {
+  const removeTodo = id => {
+    state.todos = state.todos.filter(todo => {
       return todo.getTodo().id !== id;
     });
   };
-  const getTodo = (id) => {
-    return state.todos.find((todo) => {
+  const getTodo = id => {
+    return state.todos.find(todo => {
       return todo.id == id;
     });
   };
-  const editTodo = (id) => {
-    // not functional
-    let todo = state.todos.find((todo) => {
+  const editTodo = id => {
+    // not functional, later implementation
+    let todo = state.todos.find(todo => {
       return todo.getTodo().id === id;
     });
   };
@@ -46,7 +46,7 @@ const projectFactory = ({
   return {
     getTodos,
     addTodo,
-    editTodo,
+    // editTodo,
     removeTodo,
     getTodo,
     togglePriority,

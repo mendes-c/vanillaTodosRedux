@@ -1,6 +1,6 @@
 //should resolve a way to make this able to create and append multiples, or to create and append to itself while being created?
 
-// so far, it's a less useful, 99% less functional jquery.
+// so far, it's a less useful, 99% less functional jquery function.
 const createAndAppend = ({
   el,
   parent = null,
@@ -15,7 +15,7 @@ const createAndAppend = ({
   dataId = null
 }) => {
   let element = document.createElement(el);
-  if (className) element.classList.add(...className.split(" "));
+  if (className) element.classList.add(...className.split(' '));
   if (id) element.id = id;
   if (content) element.innerHTML = content;
   if (attr) element.setAttribute(attr.text, attr.content);
