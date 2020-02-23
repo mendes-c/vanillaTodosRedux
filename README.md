@@ -15,17 +15,9 @@ npm run build
 
 ```
 
-## Improvements
-
-## Start
-
-Run the project with 'npm run dev'
+## Improvements / Bugs
 
 ## Notable Technologies Used
 
-- [React](https://reactjs.org/docs/getting-started.html) - Front End Library
-- [Redux](https://redux.js.org/) - State Management
-- [Express](https://expressjs.com/) - API Server
-- [Passport](http://www.passportjs.org/) - Authentication Management
 - [Materialize CSS](https://materializecss.com/getting-started.html) - CSS Framework
-- [Formik](https://jaredpalmer.com/formik) - Form usage
+- [Webpack](https://webpack.js.org/) - Bundling
